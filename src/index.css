@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* MyComponent.css */
+.svg-shrug:not(.animated) .animable {
+    opacity: 0;
+  }
+  
+  .svg-shrug.animated .background-inject {
+    animation: wind 1.5s infinite linear;
+    animation-delay: 0s;
+  }
+  
+  .svg-shrug.animated .speech-bubble-inject {
+    animation: floating 1.5s infinite linear;
+    animation-delay: 0s;
+  }
+  
+  @keyframes wind {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(1deg);
+    }
+    75% {
+      transform: rotate(-1deg);
+    }
+  }
+  
+  @keyframes floating {
+    0% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+  
