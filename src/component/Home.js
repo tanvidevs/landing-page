@@ -15,31 +15,91 @@ const Home = () => {
     />
    <link rel="canonical" href="/home" />
  </Helmet>
-
-
+  
   const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
+  const isValidEmail = (email) => {
+    // Regular expression for validating an Email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault();
 
     try {
-      if (email.trim() !== "") {
-        await firestore.collection("waitlist").add({
+      if (isValidEmail(email)) {
+        await firestore.collection('waitlist').add({
           email,
         });
 
-        setEmail(""); // Clear the email input field
+        setEmail(''); // Clear the email input field
+        setErrorMessage('');
         toggleModal();
+      } else {
+        setErrorMessage('Please enter a valid email address.');
       }
     } catch (error) {
-      console.error("Error submitting data: ", error);
+      console.error('Error submitting data: ', error);
     }
   };
+
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [email, setEmail] = useState("");
+
+  // const toggleModal = () => {
+  //   setIsOpen(!isOpen);
+  // };
+
+  // const isValidEmail = (email) => {
+  //   // Regular expression for validating an Email
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return emailRegex.test(email);
+  // };
+  
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   try {
+  //     if (isValidEmail(email)) {
+  //       await firestore.collection("waitlist").add({
+  //         email,
+  //       });
+  
+  //       setEmail(""); // Clear the email input field
+  //       toggleModal();
+  //     } else {
+  //       console.error("Invalid email address");
+  //       // Handle the invalid email address (show error message, etc.)
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting data: ", error);
+  //   }
+  // };
+  
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Prevent the default form submission behavior
+
+  //   try {
+  //     if (email.trim() !== "") {
+  //       await firestore.collection("waitlist").add({
+  //         email,
+  //       });
+
+  //       setEmail(""); // Clear the email input field
+  //       toggleModal();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting data: ", error);
+  //   }
+  // };
 
   return (
     
@@ -51,16 +111,16 @@ const Home = () => {
             <p className="mb-8 leading-relaxed">Discover your ideal digital marketing guru, website wizard, or graphic design genius today! Our platform connects freelancers with the skills you need to make your project shine.</p>
             <div className="flex w-full md:justify-start justify-center items-end">
               <div className="relative mr-4 md:w-full lg:w-full xl:w-1/2 w-2/4">
-                <input
-                
-                  type="text"
-                  id="hero-field"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-gray-100 rounded border bg-opacity-50 border-gray-300 focus:ring-2 focus:ring-pink-200 focus:bg-transparent focus:border-pink-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  placeholder="tanvi@example.com"
-                />
+              <input
+          type="text"
+          id="hero-field"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full bg-gray-100 rounded border bg-opacity-50 border-gray-300 focus:ring-2 focus:ring-pink-200 focus:bg-transparent focus:border-pink-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+          placeholder="tanvi@example.com"
+        />
+        {errorMessage && <span className="text-red-500 text-sm">{errorMessage}</span>}
               </div>
               <button
                 onClick={(event) => {
